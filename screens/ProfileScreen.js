@@ -4,17 +4,27 @@ import { View, Text, Button, Image } from 'react-native';
 class ProfileScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			user_id: null,
+			given_name: null,
+			family_name: null,
+			email: null,
+			recent_chits: [],
+		};
 		let profile_image;
 		const credentials = {
-			token: null,
-			id: 0,
+			token: 'string',
+			id: 7,
 		};
+		this.get_details(this.id);
 	}
 	async logout() {
 		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', 'X-Authorization': token },
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Authorization': this.credentials.token,
+			},
 		});
 		if (response.ok) {
 			console.log('Logged out');
@@ -23,13 +33,17 @@ class ProfileScreen extends Component {
 		}
 	}
 
-	async get_details() {
-		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + id, {
+	async get_details(props) {
+		let url = 'http://10.0.2.2:3333/api/v0.0.5/user/8';
+		console.log(url);
+		const response = await fetch(url, {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json' },
 		});
 		if (response.ok) {
 			console.log('Logged out');
+			const json = await response.json();
+			this.setState({ user_id: json.user_id });
 		} else {
 			console.log('Response code: ' + response.status);
 		}
@@ -97,6 +111,14 @@ class ProfileScreen extends Component {
 							color="mediumturquoise"
 							onPress={() => {
 								this.edit();
+							}}
+						/>
+						<View style={{ padding: 5 }}></View>
+						<Button
+							title="Logout"
+							color="red"
+							onPress={() => {
+								this.logout();
 							}}
 						/>
 					</View>

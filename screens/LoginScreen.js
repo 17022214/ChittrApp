@@ -26,7 +26,7 @@ class LoginScreen extends Component {
 			console.log('Success');
 			ToastAndroid.show('Account Created Successfully', ToastAndroid.SHORT);
 			this.props.navigation.navigate('Login', { new_user: false });
-		} //200 - Okay
+		} //201 - Created
 		else {
 			console.log('Response code: ' + response.status);
 		} //400 - Bad request, 404 - Not found
@@ -96,25 +96,25 @@ class LoginScreen extends Component {
 					<Text style={{ fontSize: 16 }}>Given name</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
-						value={this.state.given_name}
+						//value={this.state.given_name}
 						onChangeText={text => this.setState({ given_name: text })}
 					/>
 					<Text style={{ fontSize: 16 }}>Family name</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
-						value={this.state.family_name}
+						//value={this.state.family_name}
 						onChangeText={text => this.setState({ family_name: text })}
 					/>
 					<Text style={{ fontSize: 16 }}>Email address</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
-						value={this.state.email}
+						//value={this.state.email}
 						onChangeText={text => this.setState({ email: text })}
 					/>
 					<Text style={{ fontSize: 16 }}>Password</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey', marginBottom: 10 }}
-						value={this.state.password}
+						//value={this.state.password}
 						onChangeText={text => this.setState({ password: text })}
 						secureTextEntry
 					/>

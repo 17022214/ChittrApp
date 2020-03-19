@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button, TextInput } from 'react-native';
 
 class FeedScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			token: null,
-			id: 0,
 			user: {
 				user_id: null,
 				given_name: null,
@@ -21,6 +19,8 @@ class FeedScreen extends Component {
 				longitude: 0,
 			},
 		};
+		let token = null;
+		let id = 0;
 	}
 	async get_chits() {
 		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/chits', {
@@ -28,7 +28,7 @@ class FeedScreen extends Component {
 			headers: { 'Content-Type': 'application/json' },
 		});
 	}
-	async post_chits() {
+	async post_chit() {
 		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/chits', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'X-Authorization': token },
@@ -43,8 +43,28 @@ class FeedScreen extends Component {
 					backgroundColor: 'rgba(0,200,255,0.25)',
 					padding: 10,
 				}}>
-				<Text>Recent Chits</Text>
+				<Text style={{ fontSize: 20, textAlign: 'center' }}>Recent Chits</Text>
 				<Text></Text>
+				<Button
+					title="Profile"
+					color="mediumseagreen"
+					onPress={() => {
+						this.props.navigation.navigate('Profile', {
+							token: this.token,
+							id: this.id,
+						});
+					}}
+				/>
+				<TextInput
+					style={{ backgroundColor: 'lightgrey' }}
+					value={this.state.chit_body}
+					onChangeText={text => this.setState({ chit_body: text })}
+				/>
+				<Button
+					title="Post"
+					color="mediumseagreen"
+					onPress={this.post_chit()}
+				/>
 			</View>
 		);
 	}
