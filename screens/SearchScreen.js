@@ -25,7 +25,7 @@ class SearchScreen extends Component {
 					onChangeText={text => this.setState({ user: text })}
 				/>
 				<Button
-					title="Edit Account"
+					title="Search"
 					color="mediumturquoise"
 					onPress={() => {
 						this.search(this.state.user);

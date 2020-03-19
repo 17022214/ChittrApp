@@ -19,7 +19,7 @@ class FeedScreen extends Component {
 				longitude: 0,
 			},
 		};
-		let token = null;
+		let token = 'string';
 		let id = 0;
 	}
 	async get_chits() {
@@ -27,6 +27,26 @@ class FeedScreen extends Component {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json' },
 		});
+		if (response.ok) {
+			console.log('Logged out');
+			const json = response.json();
+			this.state.user.setState({
+				user_id: json.user_id,
+				given_name: json.given_name,
+				family_name: json.family_name,
+			});
+			this.setState({
+				chit_id: json.chit_id,
+				timestamp: json.timestamp,
+				chit_content: json.chit_content,
+			});
+			this.state.location.setState({
+				latitude: json.latitude,
+				longitude: json.longitude,
+			});
+		} else {
+			console.log('Response code: ' + response.status);
+		}
 	}
 	async post_chit() {
 		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/chits', {
@@ -63,7 +83,9 @@ class FeedScreen extends Component {
 				<Button
 					title="Post"
 					color="mediumseagreen"
-					onPress={this.post_chit()}
+					onPress={() => {
+						this.post_chit();
+					}}
 				/>
 			</View>
 		);
