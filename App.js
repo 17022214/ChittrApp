@@ -14,7 +14,6 @@ const AppTabNav = createBottomTabNavigator({
 	Profile: { screen: ProfileScreen },
 	Search: { screen: SearchScreen },
 });
-
 const AppContainer = createAppContainer(AppTabNav);
 
 export default AppContainer;

@@ -8,6 +8,7 @@ class HomeScreen extends Component {
 			token: null,
 		};
 	}
+
 	render() {
 		return (
 			<View style={{ padding: 10 }}>

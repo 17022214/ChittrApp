@@ -11,8 +11,20 @@ class LoginScreen extends Component {
 			family_name: null,
 			new_user: false,
 		};
-		if (this.props.navigation.state.params.new_user !== undefined) {
-			this.props.navigation.navigate('Login', { new_user: false });
+	}
+
+	//Checks that a variable exists and error corrects
+	set_var() {
+		const params = this.props.navigation.state.params;
+		try {
+			//console.log('New user? ' + params.new_user);
+			if (this.state.new_user != params.new_user) {
+				this.setState({ new_user: params.new_user });
+			}
+			return this.state.new_user;
+		} catch {
+			console.log('failed');
+			//this.props.navigation.navigate('Login', { new_user: false }); //Re-load screen with variable
 		}
 	}
 
@@ -65,8 +77,7 @@ class LoginScreen extends Component {
 	}
 
 	render() {
-		console.log('New user? ' + this.props.navigation.state.params.new_user);
-		if (this.props.navigation.state.params.new_user) {
+		if (this.set_var()) {
 			// Show 'Create account' page - new user
 			return (
 				<View style={{ padding: 10 }}>
