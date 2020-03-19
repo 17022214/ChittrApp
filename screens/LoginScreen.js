@@ -13,21 +13,6 @@ class LoginScreen extends Component {
 		};
 	}
 
-	//Checks that a variable exists and error corrects
-	set_var() {
-		const params = this.props.navigation.state.params;
-		try {
-			//console.log('New user? ' + params.new_user);
-			if (this.state.new_user != params.new_user) {
-				this.setState({ new_user: params.new_user });
-			}
-			return this.state.new_user;
-		} catch {
-			console.log('failed');
-			//this.props.navigation.navigate('Login', { new_user: false }); //Re-load screen with variable
-		}
-	}
-
 	//POST new user's data to server
 	async post_new_user(props) {
 		console.log('Creating new account with: ' + this.state);
@@ -59,21 +44,46 @@ class LoginScreen extends Component {
 				password: this.state.password,
 			}),
 		});
-		try {
-			const json = await response.json();
-			console.log(json);
-		} catch {
-			console.log('Invalid JSON');
-		}
-
 		if (response.ok) {
 			console.log('Success');
-			ToastAndroid.show('Welcome back', ToastAndroid.SHORT);
-			this.props.navigation.navigate('Feed', { token: json.token });
+
+			try {
+				const json = await response.json();
+				console.log(json);
+				ToastAndroid.show('Welcome back', ToastAndroid.SHORT);
+				try {
+					this.props.navigation.navigate('Feed', {
+						token: json.token,
+						id: json.id,
+					});
+				} catch (error) {
+					console.error(error);
+				}
+			} catch (error) {
+				console.log('Invalid JSON');
+			}
 		} else {
 			console.log('Response code: ' + response.status);
 		} //500 - Internal Server Error
-		ToastAndroid.show('Login Attempt Failed', ToastAndroid.SHORT);
+		response.catch(function(error) {
+			console.error(error);
+			ToastAndroid.show('Login Attempt Failed', ToastAndroid.SHORT);
+		});
+	}
+
+	//Checks that a variable exists and error corrects
+	set_var() {
+		const params = this.props.navigation.state.params;
+		try {
+			//console.log('New user? ' + params.new_user);
+			if (this.state.new_user != params.new_user) {
+				this.setState({ new_user: params.new_user });
+			}
+			return this.state.new_user;
+		} catch {
+			console.log('variable not ready');
+			//this.props.navigation.navigate('Login', { new_user: false }); //Re-load screen with variable
+		}
 	}
 
 	render() {
