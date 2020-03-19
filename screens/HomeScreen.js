@@ -11,11 +11,19 @@ class HomeScreen extends Component {
 
 	render() {
 		return (
-			<View style={{ padding: 10 }}>
-				<Text>Home Screen</Text>
+			<View
+				style={{
+					padding: 10,
+					justifyContent: 'center',
+					flex: 1,
+					backgroundColor: 'rgba(0,200,255,0.25)',
+				}}>
+				<Text style={{ fontSize: 26, textAlign: 'center', padding: 25 }}>
+					Please login or {'\n'} create an account
+				</Text>
 				<Button
 					title="Login"
-					color="mediumspringgreen"
+					color="mediumseagreen"
 					onPress={() =>
 						this.props.navigation.navigate('Login', { new_user: false })
 					}

@@ -10,7 +10,12 @@ class SearchScreen extends Component {
 	}
 	render() {
 		return (
-			<View>
+			<View
+				style={{
+					flex: 1,
+					backgroundColor: 'rgba(0,200,255,0.25)',
+					padding: 10,
+				}}>
 				<Text>Search Screen</Text>
 			</View>
 		);

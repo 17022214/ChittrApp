@@ -6,6 +6,7 @@ class FeedScreen extends Component {
 		super(props);
 		this.state = {
 			token: null,
+			id: 0,
 			user: {
 				user_id: null,
 				given_name: null,
@@ -36,8 +37,14 @@ class FeedScreen extends Component {
 	}
 	render() {
 		return (
-			<View>
+			<View
+				style={{
+					flex: 1,
+					backgroundColor: 'rgba(0,200,255,0.25)',
+					padding: 10,
+				}}>
 				<Text>Recent Chits</Text>
+				<Text></Text>
 			</View>
 		);
 	}

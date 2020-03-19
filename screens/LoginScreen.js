@@ -9,8 +9,8 @@ class LoginScreen extends Component {
 			password: null,
 			given_name: null,
 			family_name: null,
-			new_user: false,
 		};
+		let new_user = false;
 	}
 
 	//POST new user's data to server
@@ -46,7 +46,6 @@ class LoginScreen extends Component {
 		});
 		if (response.ok) {
 			console.log('Success');
-
 			try {
 				const json = await response.json();
 				console.log(json);
@@ -64,11 +63,8 @@ class LoginScreen extends Component {
 			}
 		} else {
 			console.log('Response code: ' + response.status);
-		} //500 - Internal Server Error
-		response.catch(function(error) {
-			console.error(error);
 			ToastAndroid.show('Login Attempt Failed', ToastAndroid.SHORT);
-		});
+		} //500 - Internal Server Error
 	}
 
 	//Checks that a variable exists and error corrects
@@ -77,9 +73,9 @@ class LoginScreen extends Component {
 		try {
 			//console.log('New user? ' + params.new_user);
 			if (this.state.new_user != params.new_user) {
-				this.setState({ new_user: params.new_user });
+				this.new_user = params.new_user;
 			}
-			return this.state.new_user;
+			return this.new_user;
 		} catch {
 			console.log('variable not ready');
 			//this.props.navigation.navigate('Login', { new_user: false }); //Re-load screen with variable
@@ -90,32 +86,41 @@ class LoginScreen extends Component {
 		if (this.set_var()) {
 			// Show 'Create account' page - new user
 			return (
-				<View style={{ padding: 10 }}>
-					<Text>Create a new account</Text>
-					<Text>Given name</Text>
+				<View
+					style={{
+						flex: 1,
+						padding: 10,
+						backgroundColor: 'rgba(0,200,255,0.25)',
+					}}>
+					<Text style={{ fontSize: 20 }}>Create a new account</Text>
+					<Text style={{ fontSize: 16 }}>Given name</Text>
 					<TextInput
+						style={{ backgroundColor: 'lightgrey' }}
 						value={this.state.given_name}
 						onChangeText={text => this.setState({ given_name: text })}
 					/>
-					<Text>Family name</Text>
+					<Text style={{ fontSize: 16 }}>Family name</Text>
 					<TextInput
+						style={{ backgroundColor: 'lightgrey' }}
 						value={this.state.family_name}
 						onChangeText={text => this.setState({ family_name: text })}
 					/>
-					<Text>Email address</Text>
+					<Text style={{ fontSize: 16 }}>Email address</Text>
 					<TextInput
+						style={{ backgroundColor: 'lightgrey' }}
 						value={this.state.email}
 						onChangeText={text => this.setState({ email: text })}
 					/>
-					<Text>Password</Text>
+					<Text style={{ fontSize: 16 }}>Password</Text>
 					<TextInput
+						style={{ backgroundColor: 'lightgrey', marginBottom: 10 }}
 						value={this.state.password}
 						onChangeText={text => this.setState({ password: text })}
 						secureTextEntry
 					/>
 					<Button
 						title="Submit"
-						color="mediumspringgreen"
+						color="mediumseagreen"
 						onPress={() => this.post_new_user()}
 					/>
 					<View style={{ padding: 5 }} />
@@ -131,23 +136,40 @@ class LoginScreen extends Component {
 		} else {
 			// Show login page - existing user
 			return (
-				<View style={{ padding: 10 }}>
-					<Text>Login Screen</Text>
-					<Text>Input your account details</Text>
-					<Text>Email Address</Text>
+				<View
+					style={{
+						flex: 1,
+						padding: 10,
+						backgroundColor: 'rgba(0,200,255,0.25)',
+					}}>
+					<Text style={{ fontSize: 20, textAlign: 'center' }}>
+						Login Screen
+					</Text>
+					<Text
+						style={{
+							fontSize: 18,
+							paddingTop: 3,
+							paddingBottom: 3,
+							textAlign: 'center',
+						}}>
+						Input your account details
+					</Text>
+					<Text style={{ fontSize: 16 }}>Email Address</Text>
 					<TextInput
+						style={{ backgroundColor: 'lightgrey' }}
 						value={this.state.email}
 						onChangeText={text => this.setState({ email: text })}
 					/>
-					<Text>Password</Text>
+					<Text style={{ fontSize: 16 }}>Password</Text>
 					<TextInput
+						style={{ backgroundColor: 'lightgrey', marginBottom: 10 }}
 						value={this.state.password}
 						onChangeText={text => this.setState({ password: text })}
 						secureTextEntry
 					/>
 					<Button
 						title="Submit"
-						color="mediumspringgreen"
+						color="mediumseagreen"
 						onPress={() => this.post_login()}
 					/>
 					<View style={{ padding: 5 }} />
