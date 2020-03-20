@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Image } from 'react-native';
+import { View, Text, TextInput, Button, Image } from 'react-native';
+
+/* ToDo:
+ * 	-View user image
+ * 	-show user details on app
+ * 	-edit account, patch details to server
+ * 	-
+ */
 
 class ProfileScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user_id: null,
-			given_name: null,
-			family_name: null,
-			email: null,
+			user_id: 0,
+			given_name: 'N/A',
+			family_name: 'N/A',
+			email: 'N/A',
 			recent_chits: [],
 		};
 		let profile_image;
+		let id = 7;
 		const credentials = {
 			token: 'string',
 			id: 7,
 		};
-		this.get_details(this.id);
+		this.get_details();
 	}
 	async logout() {
 		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
@@ -28,13 +36,19 @@ class ProfileScreen extends Component {
 		});
 		if (response.ok) {
 			console.log('Logged out');
+			this.credentials;
+			this.props.navigation.navigate('Feed', {
+				token: 'string',
+				id: 0,
+			});
 		} else {
 			console.log('Response code: ' + response.status);
 		}
 	}
 
 	async get_details(props) {
-		let url = 'http://10.0.2.2:3333/api/v0.0.5/user/8';
+		let url =
+			'http://10.0.2.2:3333/api/v0.0.5/user/' + this.credentials.id.toString();
 		console.log(url);
 		const response = await fetch(url, {
 			method: 'GET',
@@ -43,7 +57,13 @@ class ProfileScreen extends Component {
 		if (response.ok) {
 			console.log('Logged out');
 			const json = await response.json();
-			this.setState({ user_id: json.user_id });
+			this.setState({
+				user_id: json.user_id,
+				given_name: json.given_name,
+				family_name: json.family_name,
+				email: json.email,
+				recent_chits: json.recent_chits,
+			});
 		} else {
 			console.log('Response code: ' + response.status);
 		}
@@ -57,20 +77,20 @@ class ProfileScreen extends Component {
 			},
 		);
 		if (response.ok) {
-			console.log('Logged out');
+			console.log('Image recieved');
 		} else {
 			console.log('Response code: ' + response.status);
 		}
 	}
 
-	async post_details() {
+	async patch_details() {
 		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + id, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 		});
 		if (response.ok) {
-			console.log('Logged out');
-			const json = response.json();
+			console.log('Account updated');
+			const json = await response.json();
 		} else {
 			console.log('Response code: ' + response.status);
 		}
@@ -86,6 +106,10 @@ class ProfileScreen extends Component {
 				}}>
 				<View>
 					<Text style={{ fontSize: 20, textAlign: 'center' }}>Profile</Text>
+					<TextInput
+						style={{ fontSize: 16, textAlign: 'left', padding: 20 }}
+						editable={this.state.TextInputDisableHolder}
+					/>
 					<Image source={this.get_user_photo} />
 				</View>
 				<View style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
@@ -110,7 +134,7 @@ class ProfileScreen extends Component {
 							title="Edit Account"
 							color="mediumturquoise"
 							onPress={() => {
-								this.edit();
+								this.patch_details();
 							}}
 						/>
 						<View style={{ padding: 5 }}></View>

@@ -7,6 +7,7 @@ import FeedScreen from './screens/FeedScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SearchScreen from './screens/SearchScreen';
 
+//Create bottom tabs to navigate through the app easily
 const AppTabNav = createBottomTabNavigator({
 	Home: { screen: HomeScreen },
 	Login: { screen: LoginScreen },

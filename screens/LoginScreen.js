@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, Button, ToastAndroid } from 'react-native';
+import RNRestart from 'react-native-restart';
 
 class LoginScreen extends Component {
 	constructor(props) {
@@ -54,6 +55,7 @@ class LoginScreen extends Component {
 					this.props.navigation.navigate('Feed', {
 						token: json.token,
 						id: json.id,
+						email: this.state.email,
 					});
 				} catch (error) {
 					console.error(error);
@@ -77,7 +79,9 @@ class LoginScreen extends Component {
 			}
 			return this.new_user;
 		} catch {
-			console.log('variable not ready');
+			console.log('variable not ready, reload app');
+			ToastAndroid.show('Error occured. Restarting app', ToastAndroid.SHORT);
+			RNRestart.Restart();
 			//this.props.navigation.navigate('Login', { new_user: false }); //Re-load screen with variable
 		}
 	}
