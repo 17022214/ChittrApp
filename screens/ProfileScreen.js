@@ -13,19 +13,21 @@ class ProfileScreen extends Component {
 		super(props);
 		this.state = {
 			user_id: 0,
-			given_name: 'N/A',
-			family_name: 'N/A',
-			email: 'N/A',
+			given_name: 'given',
+			family_name: 'family',
+			email: 'g.family@email.com',
 			recent_chits: [],
 		};
 		let profile_image;
 		let id = 7;
 		const credentials = {
 			token: 'string',
-			id: 7,
+			id: 3, //Temp value, reset to 0 when working - 3 used to test '/user/{id}'
 		};
 		this.get_details();
 	}
+
+	//remove users credentials/logout
 	async logout() {
 		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
 			method: 'POST',
@@ -36,7 +38,10 @@ class ProfileScreen extends Component {
 		});
 		if (response.ok) {
 			console.log('Logged out');
-			this.credentials;
+			this.credentials = {
+				token: 'string',
+				id: 0,
+			}; //resets credentials to a 'blank' object
 			this.props.navigation.navigate('Feed', {
 				token: 'string',
 				id: 0,
@@ -45,17 +50,25 @@ class ProfileScreen extends Component {
 			console.log('Response code: ' + response.status);
 		}
 	}
+	//retrieve user's information from server
+	async get_details() {
+		let url = 'http://10.0.2.2:3333/api/v0.0.5/user/'; //Add valid id to end
 
-	async get_details(props) {
-		let url =
-			'http://10.0.2.2:3333/api/v0.0.5/user/' + this.credentials.id.toString();
-		console.log(url);
+		try {
+			//Add id to end of URL
+			url = 'http://10.0.2.2:3333/api/v0.0.5/user/' + this.credentials.id;
+		} catch (error) {
+			//id 0 forces a 404 error on server
+			url = 'http://10.0.2.2:3333/api/v0.0.5/user/0';
+		}
+
+		//console.log(url);//Debug
 		const response = await fetch(url, {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json' },
-		});
+		}); //Send GET request to server
 		if (response.ok) {
-			console.log('Logged out');
+			//console.log('Account Details Recieved');//Debug
 			const json = await response.json();
 			this.setState({
 				user_id: json.user_id,
@@ -65,34 +78,42 @@ class ProfileScreen extends Component {
 				recent_chits: json.recent_chits,
 			});
 		} else {
-			console.log('Response code: ' + response.status);
+			console.log('get_details, Response code: ' + response.status);
 		}
 	}
 	async get_user_photo() {
 		const response = await fetch(
-			'http://10.0.2.2:3333/api/v0.0.5/user/' + id + '/photo',
+			'http://10.0.2.2:3333/api/v0.0.5/user/' + this.credentials.id + '/photo',
 			{
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' },
 			},
-		);
+		); //
 		if (response.ok) {
 			console.log('Image recieved');
 		} else {
-			console.log('Response code: ' + response.status);
+			console.log('get_user_photo, Response code: ' + response.status);
 		}
 	}
 
 	async patch_details() {
-		const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/user/' + id, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
-		});
+		//sends all data to server in JSON format
+		const response = await fetch(
+			'http://10.0.2.2:3333/api/v0.0.5/user/' + this.credentials.id,
+			{
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-Authorization': this.credentials.token,
+				},
+				body: JSON.stringify(this.state),
+			},
+		);
 		if (response.ok) {
 			console.log('Account updated');
 			const json = await response.json();
 		} else {
-			console.log('Response code: ' + response.status);
+			console.log('patch_details, Response code: ' + response.status);
 		}
 	}
 
@@ -103,14 +124,40 @@ class ProfileScreen extends Component {
 					flex: 1,
 					backgroundColor: 'rgba(0,200,255,0.25)',
 					padding: 10,
+					justifyContent: 'space-around',
 				}}>
+				<Text style={{ fontSize: 20, textAlign: 'center' }}>Profile</Text>
 				<View>
-					<Text style={{ fontSize: 20, textAlign: 'center' }}>Profile</Text>
-					<TextInput
-						style={{ fontSize: 16, textAlign: 'left', padding: 20 }}
-						editable={this.state.TextInputDisableHolder}
-					/>
-					<Image source={this.get_user_photo} />
+					<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+						<Image source={this.get_user_photo} />
+						<TextInput
+							style={{
+								fontSize: 18,
+								textAlign: 'left',
+								paddingRight: 2,
+								paddingLeft: 20,
+							}}
+							editable={this.state.TextInputDisableHolder}
+							value={this.state.given_name}
+						/>
+						<TextInput
+							style={{
+								fontSize: 18,
+								textAlign: 'left',
+								paddingRight: 20,
+								paddingLeft: 2,
+							}}
+							editable={this.state.TextInputDisableHolder}
+							value={this.state.family_name}
+						/>
+					</View>
+					<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+						<TextInput
+							style={{ fontSize: 14, textAlign: 'left', paddingBottom: 20 }}
+							editable={this.state.TextInputDisableHolder}
+							value={this.state.email}
+						/>
+					</View>
 				</View>
 				<View style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
 					<View

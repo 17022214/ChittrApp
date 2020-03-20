@@ -95,30 +95,35 @@ class LoginScreen extends Component {
 						flex: 1,
 						padding: 10,
 						backgroundColor: 'rgba(0,200,255,0.25)',
+						justifyContent: 'space-around',
 					}}>
 					<Text style={{ fontSize: 20 }}>Create a new account</Text>
 					<Text style={{ fontSize: 16 }}>Given name</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
-						//value={this.state.given_name}
+						placeholder="Forename"
+						underlineColorAndroid="black"
 						onChangeText={text => this.setState({ given_name: text })}
 					/>
 					<Text style={{ fontSize: 16 }}>Family name</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
-						//value={this.state.family_name}
+						placeholder="Surname"
+						underlineColorAndroid="black"
 						onChangeText={text => this.setState({ family_name: text })}
 					/>
 					<Text style={{ fontSize: 16 }}>Email address</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
-						//value={this.state.email}
+						placeholder="Email address"
+						underlineColorAndroid="black"
 						onChangeText={text => this.setState({ email: text })}
 					/>
 					<Text style={{ fontSize: 16 }}>Password</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey', marginBottom: 10 }}
-						//value={this.state.password}
+						placeholder="Password"
+						underlineColorAndroid="black"
 						onChangeText={text => this.setState({ password: text })}
 						secureTextEntry
 					/>
@@ -145,6 +150,7 @@ class LoginScreen extends Component {
 						flex: 1,
 						padding: 10,
 						backgroundColor: 'rgba(0,200,255,0.25)',
+						justifyContent: 'space-around',
 					}}>
 					<Text style={{ fontSize: 20, textAlign: 'center' }}>
 						Login Screen
@@ -161,13 +167,16 @@ class LoginScreen extends Component {
 					<Text style={{ fontSize: 16 }}>Email Address</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
+						placeholder="Email address"
+						underlineColorAndroid="black"
 						value={this.state.email}
 						onChangeText={text => this.setState({ email: text })}
 					/>
 					<Text style={{ fontSize: 16 }}>Password</Text>
 					<TextInput
 						style={{ backgroundColor: 'lightgrey', marginBottom: 10 }}
-						value={this.state.password}
+						placeholder="Password"
+						underlineColorAndroid="black"
 						onChangeText={text => this.setState({ password: text })}
 						secureTextEntry
 					/>

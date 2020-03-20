@@ -25,9 +25,9 @@ class FeedScreen extends Component {
 		this.state = {
 			chit_id: 0,
 			timestamp: 0,
-			chit_content: 'string',
+			chit_content: 'string', //existing chit content
 			refreshing: false,
-			new_chit: 'string',
+			new_chit: 'string', //holder for new post content
 			location: {
 				latitude: 0,
 				longitude: 0,
@@ -111,7 +111,7 @@ class FeedScreen extends Component {
 			body: JSON.stringify({
 				chit_id: this.state.chit_id + 1,
 				timestamp: this.state.timestamp,
-				chit_content: this.state.chit_content,
+				chit_content: this.state.new_chit,
 				location: {
 					latitude: this.state.location.latitude,
 					longitude: this.state.location.longitude,
@@ -133,9 +133,9 @@ class FeedScreen extends Component {
 					flex: 1,
 					backgroundColor: 'rgba(0,200,255,0.25)',
 					padding: 10,
+					justifyContent: 'space-evenly',
 				}}>
 				<Text style={{ fontSize: 20, textAlign: 'center' }}>Recent Chits</Text>
-				<Text></Text>
 				<Button
 					title="Profile"
 					color="mediumseagreen"
@@ -151,6 +151,8 @@ class FeedScreen extends Component {
 					<TextInput
 						style={{ backgroundColor: 'lightgrey' }}
 						value={this.state.chit_body}
+						placeholder="Got something to say?"
+						underlineColorAndroid="black"
 						onChangeText={text => this.setState({ new_chit: text })}
 					/>
 					<Button

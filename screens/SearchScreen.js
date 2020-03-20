@@ -17,11 +17,14 @@ class SearchScreen extends Component {
 					flex: 1,
 					backgroundColor: 'rgba(0,200,255,0.25)',
 					padding: 10,
+					justifyContent: 'space-around',
 				}}>
 				<Text style={{ fontSize: 20, textAlign: 'center' }}>Search Users</Text>
 				<TextInput
 					style={{ backgroundColor: 'lightgrey' }}
-					value={this.state.user}
+					placeholder="Enter Your Userame"
+					underlineColorAndroid="transparent"
+					//					value={this.state.user}
 					onChangeText={text => this.setState({ user: text })}
 				/>
 				<Button
